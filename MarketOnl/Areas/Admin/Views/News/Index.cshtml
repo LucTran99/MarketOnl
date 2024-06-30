@@ -1,13 +1,12 @@
-﻿@using PagedList.Core.Mvc;
-
-@model PagedList.Core.IPagedList<MarketOnl.Data.Product>
-
+﻿@model PagedList.Core.IPagedList<MarketOnl.Data.News>
+@using PagedList.Core.Mvc
 
 @{
-    int CurrentPage = ViewBag.CurrentPage;
-    ViewData["Title"] = "Danh sách sản phẩm";
+    ViewData["Title"] = "Danh sách tin tức";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+
+
 
 
 
@@ -23,10 +22,10 @@
                 <tr>
                     <th>STT</th>
                     <th>Hình ảnh</th>
-                    <th class="product-name">Tên sản phẩm </th>
+                    <th class="titleNews">Tiêu đề</th>
                     <th>Danh mục </th>
-                    <th>Số lượng</th>
-                    <th>Giá</th>
+                    <th>Tin nóng</th>
+                    <th>Trạng thái</th>
 
                     <th>#</th>
                 </tr>
@@ -39,23 +38,57 @@
                     foreach (var item in Model)
                     {
                         a++;
-                        <tr id="trow_@item.ProductId">
+                        <tr id="trow_@item.NewsId">
 
                             <td>@a</td>
-                            <td><img src="~/images/products/@item.Picture" style="width:70px; height:50px; object-fit:cover; border-radius: 0;" /></td>
-                            @* <td><img src="@strImg" class="imgProduct" data-id="@item.Id" style="width: 50px ; height: 50px; object-fit:cover" alt="Alternate Text" /></td> *@
-                            <td class="product-name">@item.Title</td>
+                            <td><img src="~/images/news/@item.Image" style="width:70px; height:50px; object-fit:cover; border-radius: 0;" /></td>
 
-                            <td>@item.Cat.CatName</td>
+                            <td class="titleNews">@item.Title</td>
 
-                            <td>@item.Quatity</td>
-                            <td>@item.Price.Value.ToString("#,##0") VNĐ</td>
+                            <td>@item.NewCat.Title</td>
+
+
+                            <td>
+
+
+                                @if (item.IsHot == true)
+                                {
+                                    <lable class="badge badge-danger">Hot</lable>
+                                }
+                                else
+                                {
+                                    <lable class="badge badge-warning">Non-Hot</lable>
+                                }
+
+
+
+                            </td>
+
 
 
 
                             <td>
-                                <a href="/admin/products/edit/@item.ProductId" class="btn btn-primary btn-sm">Sửa</a>
-                                <a href="#" data-id="@item.ProductId" class="btn btn-danger btn-sm btnDelete">Xóa</a>
+
+
+                                @if (item.Published == true)
+                                {
+                                    <lable class="badge badge-danger">Published</lable>
+                                }
+                                else
+                                {
+                                    <lable class="badge badge-warning">Non-Published</lable>
+                                }
+
+
+
+
+                            </td>
+
+
+
+                            <td>
+                                <a href="/admin/news/edit/@item.NewsId" class="btn btn-primary btn-sm">Sửa</a>
+                                <a href="#" data-id="@item.NewsId" class="btn btn-danger btn-sm btnDelete">Xóa</a>
                             </td>
 
                         </tr>
@@ -86,33 +119,41 @@
 
 @section Css {
     <style>
-  
-            th.product-name, td.product-name {
-                max-width: 200px; /* Thiết lập chiều rộng tối đa cho cột */
-                white-space: nowrap; /* Không cho phép xuống dòng */
-                overflow: hidden; /* Ẩn nội dung vượt quá */
-                text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
-            }
+
+        th.titleNews, td.titleNews {
+            max-width: 200px;
+            white-space: nowrap; /* Ko cho phép xuống dòng */
+            overflow: hidden; /* Ần nội dung vượt quá */
+            text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
+        }
 
     </style>
+
 
     <link href="~/adminassets/plugins/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/adminassets/css/sweetalert2.min.css" rel="stylesheet" />
 
 
+
 }
+
 
 
 @section Js {
     <script src="~/adminassets/plugins/toastr/toastr.min.js"></script>
     <script src="~/adminassets/js/sweetalert2.all.min.js"></script>
+
+
     <script>
 
         $(document).ready(function () {
 
             $('body').on('click', 'a.btnDelete', function () {
+
                 let id = $(this).data('id');
+
                 Swal.fire({
+
                     title: 'Bạn chắc muốn xóa không',
                     text: 'Xóa không thể hồi phục',
                     showCancelButton: true,
@@ -122,9 +163,13 @@
                     cancelButtonText: 'Hủy'
 
                 }).then(function (rs) {
+
                     if (rs.isConfirmed) {
-                        $.get('/Admin/Products/Delete', {
+
+                        $.get('/admin/news/delete', {
+
                             id: id
+
                         }, function (data) {
                             if (data == true) {
                                 toastr.success('Thông báo: Xóa sản phẩm thành công');
@@ -133,15 +178,26 @@
                             } else {
                                 toastr.error('Lỗi hệ thống!! vui lòng kiểm tra lại');
                             }
+
+
                         })
+
                     }
+
+
                 })
+
+
+
             })
+
 
 
         })
 
 
 
+
     </script>
+
 }

@@ -19,6 +19,10 @@ public partial class News
 
     public int? Views { get; set; }
 
+    public bool? IsHot { get; set; }
+
+    public bool? Published { get; set; }
+
     public int? NewCatId { get; set; }
 
     public int? CreatedBy { get; set; }

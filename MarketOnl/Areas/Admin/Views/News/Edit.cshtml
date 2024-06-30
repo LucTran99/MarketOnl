@@ -1,0 +1,107 @@
+﻿
+
+@model MarketOnl.Data.News
+
+
+@{
+    ViewData["Title"] = "Cập nhật tin tức";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<div class="card">
+
+    <div class="card-body table-responsive">
+
+
+        <form asp-action="edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="NewsId" />
+            <input type="hidden" asp-for="CreatedOn" />
+            <div class="form-group">
+                <label class="control-label">Tiêu đề</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Mô tả</label>
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Nhập chi tiết" })
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Ảnh đại diện</label>
+                <input asp-for="Image" type="file" name="fThumb" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Alias</label>
+                <input asp-for="Alias" class="form-control" />
+                <span asp-validation-for="Alias" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Danh mục tin tức</label>
+                @Html.DropDownListFor(model => model.NewCatId, ViewBag.CatNews as SelectList, "Chọn danh mục tin ", new { @class = "form-control", @placeholder = "" })
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Chi tiết </label>
+                @Html.TextAreaFor(model => model.Detail, new { @class = "form-control", @placeholder = "Nhập chi tiết" })
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                         
+                            <input class="form-check-input" type="checkbox" data-val="true" data-val-required="The IsHot field is required." id="Published" name="Published" value="true"> @Html.DisplayNameFor(model => model.Published)
+
+
+                        </label>
+                    </div>
+
+
+
+
+                </div>
+
+
+                <div class="col-md-4">
+
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" data-val="true" data-val-required="The IsHot field is required." id="IsHot" name="IsHot" value="true"> IsHot
+
+
+                        </label>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+
+
+</div>
+

@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification;
 using MarketOnl.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 builder.Services.AddDbContext<BanHangOnlContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("BanHangOnlContext")));
 var app = builder.Build();
 

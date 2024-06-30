@@ -1,4 +1,6 @@
-﻿using MarketOnl.Data;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+
+using MarketOnl.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +13,11 @@ namespace MarketOnl.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly BanHangOnlContext _context;
-
-        public ProductsController(BanHangOnlContext context)
+        public INotyfService NotyfService { get; }
+        public ProductsController(BanHangOnlContext context, INotyfService notyfService)
         { 
             _context = context;
+            NotyfService = notyfService;
         }
         public  IActionResult Index(int? page)
         {
@@ -58,7 +61,9 @@ namespace MarketOnl.Areas.Admin.Controllers
 
                 if (string.IsNullOrEmpty(model.ProductName)) model.Picture = "default.jpg";
 
-                model.Alias = Utilities.SEOUrl(model.ProductName);
+                model.Alias = Utilities.SEOUrl(model.Title);
+
+                NotyfService.Success("Thêm sản phẩm thành công");
 
                 _context.Products.Add(model);
                 _context.SaveChanges();
@@ -111,7 +116,7 @@ namespace MarketOnl.Areas.Admin.Controllers
 
                 model.Alias = Utilities.SEOUrl(model.ProductName);
 
-
+                NotyfService.Success("Cập nhật sản phẩm thành công");
                 _context.Products.Update(model);
                 _context.SaveChanges();
 
