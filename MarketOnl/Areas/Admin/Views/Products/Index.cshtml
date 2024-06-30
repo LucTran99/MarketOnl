@@ -1,0 +1,144 @@
+﻿@using PagedList.Core.Mvc;
+
+@model PagedList.Core.IPagedList<MarketOnl.Data.Product>
+
+
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách sản phẩm" + CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<div class="card">
+
+    <div class="card-body table-responsive">
+        <p>
+            <a asp-action="Add" class="btn btn-primary ">Create New</a>
+        </p>
+
+        <table id="items" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Hình ảnh</th>
+                    <th class="product-name">Tên sản phẩm </th>
+                    <th>Danh mục </th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+
+                    <th>#</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model != null && Model.Count() > 0)
+                {
+                    int a = 0;
+                    foreach (var item in Model)
+                    {
+                        a++;
+                        <tr id="trow_@item.ProductId">
+
+                            <td>@a</td>
+                            <td><img src="~/images/products/@item.Picture" style="width:70px; height:50px; object-fit:cover; border-radius: 0;" /></td>
+                            @* <td><img src="@strImg" class="imgProduct" data-id="@item.Id" style="width: 50px ; height: 50px; object-fit:cover" alt="Alternate Text" /></td> *@
+                            <td class="product-name">@item.Title</td>
+
+                            <td>@item.Cat.CatName</td>
+
+                            <td>@item.Quatity</td>
+                            <td>@item.Price.Value.ToString("#,##0") VNĐ</td>
+
+
+
+                            <td>
+                                <a href="/admin/products/edit/@item.ProductId" class="btn btn-primary btn-sm">Sửa</a>
+                                <a href="#" data-id="@item.ProductId" class="btn btn-danger btn-sm btnDelete">Xóa</a>
+                            </td>
+
+                        </tr>
+                    }
+                }
+
+
+            </tbody>
+        </table>
+
+
+
+
+        <div aria-label="Page navigation example" class="mt-3" style="float:right">
+            <ul class="pagination">
+                <pager class="pager-controller" list="@Model" asp-area="Admin" asp-controller="products" asp-action="index"></pager>
+            </ul>
+        </div>
+
+
+
+
+    </div>
+
+</div>
+@section Css {
+    <style>
+  
+            th.product-name, td.product-name {
+                max-width: 200px; /* Thiết lập chiều rộng tối đa cho cột */
+                white-space: nowrap; /* Không cho phép xuống dòng */
+                overflow: hidden; /* Ẩn nội dung vượt quá */
+                text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
+            }
+
+    </style>
+
+    <link href="~/adminassets/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/adminassets/css/sweetalert2.min.css" rel="stylesheet" />
+
+
+}
+
+
+@section Js {
+    <script src="~/adminassets/plugins/toastr/toastr.min.js"></script>
+    <script src="~/adminassets/js/sweetalert2.all.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('body').on('click', 'a.btnDelete', function () {
+                let id = $(this).data('id');
+                Swal.fire({
+                    title: 'Bạn chắc muốn xóa không',
+                    text: 'Xóa không thể hồi phục',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Xác nhận',
+                    cancelButtonText: 'Hủy'
+
+                }).then(function (rs) {
+                    if (rs.isConfirmed) {
+                        $.get('/Admin/Products/Delete', {
+                            id: id
+                        }, function (data) {
+                            if (data == true) {
+                                toastr.success('Thông báo: Xóa sản phẩm thành công');
+                                location.reload();
+
+                            } else {
+                                toastr.error('Lỗi hệ thống!! vui lòng kiểm tra lại');
+                            }
+                        })
+                    }
+                })
+            })
+
+
+        })
+
+
+
+    </script>
+}

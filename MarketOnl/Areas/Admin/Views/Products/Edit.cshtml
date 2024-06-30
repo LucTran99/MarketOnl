@@ -1,0 +1,136 @@
+﻿@model MarketOnl.Data.Product
+
+
+
+@{
+    ViewData["Title"] = "Cập nhật sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+
+<div class="card">
+
+    <div class="card-body table-responsive">
+
+
+
+
+
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ProductId" />
+            <div class="form-group">
+                <label>Tên sản phẩm</label>
+              <input asp-for="ProductName" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Tiêu đề</label>
+                <input asp-for="Title" class="form-control" />
+              
+            </div>
+            <div class="form-group">
+                <label asp-for="Alias" class="control-label">Alias</label>
+                <input asp-for="Alias" class="form-control-file" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Picture" class="control-label">Ảnh đại diện</label>
+
+                <input asp-for="Picture" name="fThumb" type="file" class="form-control-file" />
+
+            </div>
+            <div class="form-group">
+                <label>Mô tả</label>
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder = "Mô tả" })
+            </div>
+
+            <div class="form-group">
+                <label>Danh mục sản phẩm</label>
+                @Html.DropDownListFor(model => model.CatId, ViewBag.ProductCategory as SelectList, "Chọn danh mục sản phẩm", new { @class = "form-control", @placeholder = "" })
+            </div>
+
+
+            <div class="form-group">
+                <label>Chi tiết</label>
+                @Html.TextAreaFor(model => model.Detail, new { @class = "form-control" })
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Số lượng</label>
+                        @Html.TextBoxFor(model => model.Quatity, new { @class = "form-control", @Value = "1" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Giá</label>
+                        <input type="text" name="demoPrice" id="demoPrice" value="@(Model?.Price ?? 0)" class="form-control auto" data-a-dec="," data-a-sep=".">
+                        @Html.HiddenFor(model => model.Price, new { @class = "form-control", @placeholder = "Giá" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Giá khuyến mãi</label>
+                        <input type="text" name="demoPriceSale" id="demoPriceSale" value="@(Model?.PriceSale ?? 0)" class="form-control auto" data-a-dec="," data-a-sep=".">
+                        @Html.HiddenFor(model => model.PriceSale, new { @class = "form-control", @placeholder = "Giá khuyến mãi" })
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Thêm mới</button>
+            </div>
+
+        </form>
+
+
+
+
+
+
+    </div>
+
+</div>
+
+
+
+
+@section Js {
+
+ 
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('.auto').autoNumeric('init');
+
+            $('#demoPrice').bind('blur focusout keypress keyup', function () {
+                var demoGet = $('#demoPrice').autoNumeric('get');
+                $('#Price').val(demoGet);
+                $('#Price').autoNumeric('set', demoGet);
+            });
+
+            $('#demoPriceSale').bind('blur focusout keypress keyup', function () {
+                var demoGet = $('#demoPriceSale').autoNumeric('get');
+                $('#PriceSale').val(demoGet);
+                $('#PriceSale').autoNumeric('set', demoGet);
+            });
+
+
+        })
+
+
+
+
+    </script>
+}

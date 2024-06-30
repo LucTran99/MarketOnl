@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewData["Title"] = "Danh mục tin tức";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="card">
+
+    <div class="card-body table-responsive">
+
+
+        <table id="items" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>
+                        Tên danh mục
+                    </th>
+                    <th width="40px"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <input type="hidden" id="Id" name="Id" />
+
+                <form id="Item">
+
+                    <div class="form-group">
+                        <lable>Tên danh mục</lable>
+                        <input type="text" name="Name" id="Name" class="form-control" />
+                    </div>
+
+                </form>
+
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary btnSave">Lưu</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+@section Css {
+
+    <link href="~/adminassets/plugins/datatables-bs4/css/datatables.bootstrap4.css" rel="stylesheet" />
+    <link href="~/adminassets/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/adminassets/css/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+
+        div.dt-buttons {
+            float: right;
+        }
+
+    </style>
+
+}
+
+@section Js{
+
+    <script src="~/adminassets/plugins/datatables/jquery.datatables.min.js"></script>
+    <script src="~/adminassets/plugins/datatables-bs4/js/datatables.bootstrap4.js"></script>
+    <script src="~/adminassets/plugins/datatables-buttons/js/datatables.buttons.min.js"></script>
+    <script src="~/adminassets/plugins/toastr/toastr.min.js"></script>
+    <script src="~/adminassets/js/sweetalert2.all.min.js"></script>
+    <script>
+
+        $(function () {
+            var items = $("#items").DataTable({
+
+                "dom": "Blfrtip",
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "/Admin/CatNews/GetList",
+                    "type": "POST",
+                    "dataType": "json"
+                },
+                "columns": [
+                    {
+                        "data": null, "render": function (data, type, row, meta) { return meta.row + 1 }
+                    },
+                    {
+                        "data": "title"
+                    },
+                    {
+                        "render": function (data, type, row, meta) {
+                            let tool = '<div class="btn-group" >' + '<a href="#" data-toggle="dropdown" class="list-icons-item text-dark" aria-expanded="false">' +
+                                '<i class="fas fa-sort-amount-down"></i>'
+                                + '</a>' +
+                                '<div class="dropdown-menu" role="menu" style="">' +
+                                '<a class="dropdown-item text-primary btnEdit" href="#" data-id="' + row.newCatId + '"><i class="fas fa-pencil mr-3"></i>Cập nhật</a>' +
+                                '<a class="dropdown-item text-danger btnDelete" href="#" data-id="' + row.newCatId + '"><i class="fas fa-trash mr-3"></i>Xoá</a>' +
+                                '</div>' +
+                                '</div>';
+                            return tool;
+
+
+
+                        }
+                    }
+
+                ],
+                "buttons": [
+                    {
+                        text: '<i class="fa fa-plus mr-2"></i> Thêm nhóm ',
+                        className: 'btn btn-info pb-1',
+                        action: function (e, dt, node, config) {
+                            $("#modal-default form#Item")[0].reset();
+                            $('id').val("");
+                            $("#modal-default").modal('show');
+                        }
+                    }
+                ]
+            });
+
+
+            $('.btnSave').click(function () {
+                $.ajax({
+                    data: $("#Item").serialize(),
+                    url: '/Admin/CatNews/Save',
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    success: function(item){
+                        $('#modal-default').modal('hide');
+                        toastr.success('Thông báo: Lưu thành công !!');
+                        items.ajax.reload();
+                    }
+                })
+            })
+
+
+
+
+
+
+
+
+
+
+        })
+
+
+    </script>
+}

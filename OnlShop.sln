@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketOnl", "MarketOnl\MarketOnl.csproj", "{E51F4DB5-43CC-4731-BFF1-151899727E66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E51F4DB5-43CC-4731-BFF1-151899727E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E51F4DB5-43CC-4731-BFF1-151899727E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E51F4DB5-43CC-4731-BFF1-151899727E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E51F4DB5-43CC-4731-BFF1-151899727E66}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C382EFF3-4CC8-4688-AED1-701FD8624106}
+	EndGlobalSection
+EndGlobal
