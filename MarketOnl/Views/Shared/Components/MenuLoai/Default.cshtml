@@ -1,0 +1,28 @@
+﻿@model IEnumerable<MarketOnl.Models.MenuLoai>
+
+<ul class="main-categories">
+
+    <li class="main-nav-list">
+        <a data-toggle="" asp-action="index" asp-controller="products">
+            <span class="lnr lnr-arrow-right"></span>Tất cả<span class="number"></span>
+        </a>
+
+    </li>
+
+
+    @if (Model != null && Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        {
+            <li class="main-nav-list">
+                <a data-toggle="" href="/ProductsCat/index/@item.CatId">
+                    <span class="lnr lnr-arrow-right"></span>@item.CatName<span class="number"></span>
+                </a>
+
+            </li>
+        }
+    }
+
+
+
+</ul>

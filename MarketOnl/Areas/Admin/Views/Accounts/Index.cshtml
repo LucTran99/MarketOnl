@@ -1,8 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Danh mục sản phẩm";
+    ViewData["Title"] = "Danh sách tài khoản";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 
 
 
@@ -16,9 +17,20 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>
-                        Tên danh mục
+                    <th colspan="1">
+                        Ảnh đại diện
                     </th>
+                    <th> Họ tên </th>
+                    <th>
+                        Nhóm quyền
+                    </th> 
+                    <th>
+                       Số điện thoại
+                    </th>
+                    <th>
+                        Truy cập gần nhất
+                    </th>
+
                     <th width="40px"></th>
                 </tr>
             </thead>
@@ -30,28 +42,53 @@
 </div>
 
 
+
+
 <div class="modal fade" id="modal-default">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"></h4>
+                <h4 class="modal-title">@ViewBag.Title</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
 
-                <input type="hidden" id="Id" name="Id" />
 
                 <form id="Item">
 
+                    <input type="hidden" id="AccountId" name="AccountId" />
+
                     <div class="form-group">
-                        <lable>Tên nhóm quyền</lable>
+                        <lable>Họ tên</lable>
                         <input type="text" name="Name" id="Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <lable>Hình đại diện</lable>
+                        <input type="file" name="Picture" id="Picture" class="form-control" />
+                        <img id="user-picture" class="user-img" style="display:none" src="" />
+                    </div>
+                    <div class="form-group">
+                        <lable>Số điện thoại</lable>
+                        <input type="text" name="PhoneNumber" id="PhoneNumber" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <lable>Mật khẩu</lable>
+                        <input type="password" name="Password" id="Password" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <lable>Hộp thư điện tử</lable>
+                        <input type="text" name="Email" id="Email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <lable for="RoleId">Nhóm quyền</lable>
+                        <select id="RoleId" name="RoleId" class="form-control">
+                            <option value="">-- Chọn --</option>
+                        </select>
                     </div>
 
                 </form>
-
 
             </div>
             <div class="modal-footer justify-content-between">
@@ -65,9 +102,6 @@
 </div>
 
 
-
-
-
 @section Css {
 
     <link href="~/adminassets/plugins/datatables-bs4/css/datatables.bootstrap4.css" rel="stylesheet" />
@@ -79,32 +113,39 @@
             float: right;
         }
 
-
-        .btnAdd {
-            margin-top: -15px
+        .user-img{
+            width:50px;
+            height: 50px;
         }
-
 
     </style>
 
 }
 
-
-@section Js {
+@section Js{
     <script src="~/adminassets/plugins/datatables/jquery.datatables.min.js"></script>
     <script src="~/adminassets/plugins/datatables-bs4/js/datatables.bootstrap4.js"></script>
     <script src="~/adminassets/plugins/datatables-buttons/js/datatables.buttons.min.js"></script>
     <script src="~/adminassets/plugins/toastr/toastr.min.js"></script>
     <script src="~/adminassets/js/sweetalert2.all.min.js"></script>
+    <script src="~/adminassets/plugins/moment/moment.min.js"></script>
+
+
     <script>
         $(function () {
-            var items = $("#items").DataTable({
 
+            var items = $("#items").DataTable({
+                // B - Buttons
+                // f - Filtering input (Lọc đầu vào)
+                // r - Processing display element (Xử lí phần hiển thị)
+                // t - The table
+                // i - Table information summary (Bảng tóm tắt thông tin)
+                // p - Pagination control (Phân trang)
                 "dom": "Blfrtip",
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "/Admin/CatProducts/GetList",
+                    "url": "/Admin/Accounts/GetList",
                     "type": "POST",
                     "dataType": "json"
                 },
@@ -112,17 +153,43 @@
                     {
                         "data": null, "render": function (data, type, row, meta) { return meta.row + 1 }
                     },
+
+
+
                     {
-                        "data": "catName"
+
+                        'render': function (data, type, row, meta) {
+                            return "<img src='" + row.picture + "'  />";
+                        }
+
+                    },
+
+                    {
+                        "data": "name"
                     },
                     {
+                        "data": "roleName"
+                    },
+
+                    {
+                        "data": "phoneNumber"
+                    },
+
+                    {
+                        "data": "lastLogin", 'render': function (data, type, row, meta) {
+                            return moment(data).isValid() ? moment(data).format('DD/MM/YYYY') : 'Chưa đăng nhập';
+                        }
+                    },
+
+                    {
                         "render": function (data, type, row, meta) {
+                            // console.log(row);
                             let tool = '<div class="btn-group" >' + '<a href="#" data-toggle="dropdown" class="list-icons-item text-dark" aria-expanded="false">' +
                                 '<i class="fas fa-sort-amount-down"></i>'
                                 + '</a>' +
                                 '<div class="dropdown-menu" role="menu" style="">' +
-                                '<a class="dropdown-item text-primary btnEdit" href="#" data-id="' + row.catId + '"><i class="fas fa-pencil mr-3"></i>Cập nhật</a>' +
-                                '<a class="dropdown-item text-danger btnDelete" href="#" data-id="' + row.catId + '"><i class="fas fa-trash mr-3"></i>Xoá</a>' +
+                                '<a class="dropdown-item text-primary btnEdit" href="#" data-id="' + row.accountId + '"><i class="fas fa-pencil mr-3"></i>Cập nhật</a>' +
+                                '<a class="dropdown-item text-danger btnDelete" href="#" data-id="' + row.accountId + '"><i class="fas fa-trash mr-3"></i>Xoá</a>' +
                                 '</div>' +
                                 '</div>';
                             return tool;
@@ -135,25 +202,40 @@
                 ],
                 "buttons": [
                     {
-                        text: '<i class="fa fa-plus mr-2"></i> Thêm nhóm ',
-                        className: 'btn btn-info btnAdd',
+                        text: '<i class="fa fa-plus mr-2"></i>Thêm nhóm  ',
+                        className: 'btn btn-info pb-1',
                         action: function (e, dt, node, config) {
                             $("#modal-default form#Item")[0].reset();
                             $('id').val("");
+                            $('#user-picture').attr('src', '').hide();
                             $("#modal-default").modal('show');
                         }
                     }
                 ]
             });
 
+            $.getJSON('/admin/roles/getList',
+                {}, function (data) {
+                    data.forEach((item) => {
+                        var o = new Option(item.roleName, item.roleId);
+                        $('#RoleId').append(o);
+                    })
+                })
+
 
             $(document).on("click", "a.btnEdit", function () {
                 let id = $(this).data("id");
-                $.getJSON("/admin/decentralis/GetItem", {
+                $.getJSON("/admin/Accounts/getItem", {
                     id: id
                 }, function (item) {
-                    $("#Id").val(item.id);
+                    $("#AccountId").val(item.accountId);
                     $("#Name").val(item.name);
+                    $('#user-picture').attr('src', item.picture).show();
+                    $('#loginName').val(item.loginName);
+                    $('#Email').val(item.email);
+
+                    $('#PhoneNumber').val(item.phoneNumber);
+                    $('#RoleId').val(item.roleId).change();
                     $("#modal-default").modal('show');
                 })
             })
@@ -161,20 +243,39 @@
 
 
             $(".btnSave").click(function () {
+                var form = $('#Item')[0];
+                var formData = new FormData(form);
+                var file = $('input[type=file]')[0].files[0];
+                formData.append('Picture', file);
+
                 $.ajax({
-                    data: $("#Item").serialize(),
-                    url: "/Admin/CatProducts/Save",
+                    data: formData,
+                    url: "/Admin/Accounts/Save",
                     type: "POST",
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    processData: false,
+                    contentType: false,
                     success: function (item) {
                         $("#modal-default").modal('hide');
                         toastr.success("Thông báo: Lưu thành công !!");
                         items.ajax.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        toastr.error("Thông báo: Có lỗi xảy ra!!");
+                        console.log("Error: " + error);
+                        console.log("Status: " + status);
+                        console.dir(xhr);
+
+
+                        // Hiển thị chi tiết lỗi từ phản hồi của máy chủ (nếu có)
+                        if (xhr.responseText) {
+                            console.log("Response Text: " + xhr.responseText);
+                        }
                     }
+
+
+
                 })
             })
-
-
 
             $('body').on('click', 'a.btnDelete', function () {
 
@@ -191,7 +292,7 @@
 
                     if (rs.isConfirmed) {
 
-                        $.get("/Admin/CatProducts/Delete", {
+                        $.get("/Admin/Accounts/Delete", {
                             id: id
                         }, function (data) {
                             if (data == true) {
@@ -211,9 +312,6 @@
 
 
 
-
-
-
-        });
+        })
     </script>
 }

@@ -1,8 +1,10 @@
 ﻿
+
 @{
-    ViewData["Title"] = "Danh mục tin tức";
+    ViewData["Title"] = "Danh sách vai trò";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 
 
 <div class="card">
@@ -15,7 +17,7 @@
                 <tr>
                     <th>#</th>
                     <th>
-                        Tên danh mục
+                        Tên vai trò
                     </th>
                     <th width="40px"></th>
                 </tr>
@@ -44,7 +46,7 @@
                 <form id="Item">
 
                     <div class="form-group">
-                        <lable>Tên danh mục</lable>
+                        <lable>Tên vai trò</lable>
                         <input type="text" name="Name" id="Name" class="form-control" />
                     </div>
 
@@ -73,13 +75,13 @@
         div.dt-buttons {
             float: right;
         }
-
-
+      
+    
     </style>
 
 }
 
-@section Js{
+@section Js {
 
     <script src="~/adminassets/plugins/datatables/jquery.datatables.min.js"></script>
     <script src="~/adminassets/plugins/datatables-bs4/js/datatables.bootstrap4.js"></script>
@@ -95,7 +97,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "/Admin/CatNews/GetList",
+                    "url": "/Admin/Roles/GetList",
                     "type": "POST",
                     "dataType": "json"
                 },
@@ -104,7 +106,7 @@
                         "data": null, "render": function (data, type, row, meta) { return meta.row + 1 }
                     },
                     {
-                        "data": "title"
+                        "data": "roleName"
                     },
                     {
                         "render": function (data, type, row, meta) {
@@ -112,8 +114,8 @@
                                 '<i class="fas fa-sort-amount-down"></i>'
                                 + '</a>' +
                                 '<div class="dropdown-menu" role="menu" style="">' +
-                                '<a class="dropdown-item text-primary btnEdit" href="#" data-id="' + row.newCatId + '"><i class="fas fa-pencil mr-3"></i>Cập nhật</a>' +
-                                '<a class="dropdown-item text-danger btnDelete" href="#" data-id="' + row.newCatId + '"><i class="fas fa-trash mr-3"></i>Xoá</a>' +
+                                '<a class="dropdown-item text-primary btnEdit" href="#" data-id="' + row.roleId + '"><i class="fas fa-pencil mr-3"></i>Cập nhật</a>' +
+                                '<a class="dropdown-item text-danger btnDelete" href="#" data-id="' + row.roleId + '"><i class="fas fa-trash mr-3"></i>Xoá</a>' +
                                 '</div>' +
                                 '</div>';
                             return tool;
@@ -141,10 +143,10 @@
             $('.btnSave').click(function () {
                 $.ajax({
                     data: $("#Item").serialize(),
-                    url: '/Admin/CatNews/Save',
+                    url: '/Admin/Roles/Save',
                     type: 'POST',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    success: function(item){
+                    success: function (item) {
                         $('#modal-default').modal('hide');
                         toastr.success('Thông báo: Lưu thành công !!');
                         items.ajax.reload();
@@ -167,7 +169,7 @@
                     cancelButtonText: 'Hủy'
                 }).then(function (rs) {
                     if (rs.isConfirmed) {
-                        $.get('/Admin/News/Delete', {
+                        $.get('/Admin/Roles/Delete', {
                             id: id
                         }, function (data) {
                             if (data == true) {

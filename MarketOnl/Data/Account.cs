@@ -15,8 +15,6 @@ public partial class Account
 
     public string? PhoneNumber { get; set; }
 
-    public string Active { get; set; } = null!;
-
     public string? Picture { get; set; }
 
     public int? RoleId { get; set; }
@@ -24,6 +22,8 @@ public partial class Account
     public DateTime? LastLogin { get; set; }
 
     public DateTime? CreateDate { get; set; }
+
+    public DateTime? UpdateDate { get; set; }
 
     public virtual Role? Role { get; set; }
 }

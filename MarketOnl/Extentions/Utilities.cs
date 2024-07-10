@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace WebBH.Extentions
@@ -20,7 +21,7 @@ namespace WebBH.Extentions
             return sb.ToString();
         }
 
-
+      
 
 
         public static string ToTitleCase(string str)

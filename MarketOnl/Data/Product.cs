@@ -11,7 +11,7 @@ public partial class Product
 
     public string? Description { get; set; }
 
-    public string Title { get; set; } = null!;
+    public string? Title { get; set; }
 
     public int? CatId { get; set; }
 
@@ -19,15 +19,15 @@ public partial class Product
 
     public decimal? PriceSale { get; set; }
 
-    public int Quatity { get; set; }
+    public int? Quatity { get; set; }
 
     public string? Picture { get; set; }
 
-    public string Alias { get; set; } = null!;
+    public string? Alias { get; set; }
 
     public string? Detail { get; set; }
 
-    public int ViewCount { get; set; }
+    public int? ViewCount { get; set; }
 
     public string? SeoTitle { get; set; }
 

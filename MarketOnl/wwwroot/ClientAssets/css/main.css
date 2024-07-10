@@ -1,4 +1,4 @@
-/*--------------------------- Color variations ----------------------*/
+﻿/*--------------------------- Color variations ----------------------*/
 /*--------------------------- Fonts ----------------------*/
 @import url("https://fonts.googleapis.com/css?family=Poppins:500,700|Roboto:400,500");
 /* Medium Layout: 1280px */
@@ -5791,3 +5791,125 @@ label {
     color: #ffba00; }
 
 /*# sourceMappingURL=main.css.map */
+
+
+.title-Products {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Giới hạn hiển thị 2 dòng */
+    -webkit-box-orient: vertical;
+  
+    max-width: 350px; /* Thiết lập chiều rộng tối đa cho cột */
+  
+    overflow: hidden; /* Ẩn nội dung vượt quá */
+    text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
+}
+
+.disabled a.page-link {
+    width: 90px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.active .page-link {
+    width: 50px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+li:nth-child(3) a.page-link {
+    width: 50px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+li:nth-child(4) a.page-link {
+    width: 90px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination {
+    margin-top: 0;
+    border-left: none;
+}
+
+
+
+.quantity_selector {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 132px;
+    height: 100%;
+    border: solid 1px #e5e5e5;
+    margin-left: 29px;
+}
+
+    .quantity_selector span {
+        font-weight: 500;
+        color: #232530;
+    }
+
+.quantity {
+    width: 100%;
+    height: 40px;
+    /*margin-top: 23px;*/
+}
+
+
+.plus,
+.minus {
+    padding-left: 14px;
+    padding-right: 14px;
+    cursor: pointer;
+    color: #ff6c00;
+}
+
+    .plus:hover,
+    .minus:hover {
+        color: #ff6c00;
+    }
+
+.checkout a {
+    background: #eceff6;
+    border-radius: 50%;
+}
+
+.navCart {
+    position: relative;
+}
+
+
+
+.checkout_items {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 21px;
+    left: 44px;
+    width: 18px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ff6c00;
+    font-size: 12px;
+    color: #FFFFFF;
+}

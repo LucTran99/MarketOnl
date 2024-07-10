@@ -110,7 +110,8 @@ namespace MarketOnl.Areas.Admin.Controllers
                     model.Image = await Utilities.UploadFile(fThumb, @"news", image.ToLower());
                 }
 
-                if (string.IsNullOrEmpty(model.Title)) model.Image = "default.jpg";
+               // if (string.IsNullOrEmpty(model.Title)) model.Image = "default.jpg";
+
                 model.Alias = Utilities.SEOUrl(model.Title);
                
 

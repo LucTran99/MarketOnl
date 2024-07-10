@@ -1,0 +1,105 @@
+﻿
+@model IEnumerable<MarketOnl.Models.ShoppingCartItem>
+
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_BannerAreaView.cshtml";
+}
+
+
+
+
+<section class="cart_area">
+    <div class="container">
+        <div class="cart_inner">
+            <div class="table-responsive" id="load_data">
+
+
+
+                <table class="table">
+                    <thead>
+                        <tr class="">
+                            <th scope="col">Ảnh đại diện</th>
+                            <th scope="col">Tên sản phẩm</th>
+
+                            <th scope="col">Giá</th>
+                            <th width="150" scope="col">Số lượng</th>
+                            <th scope="col">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var tongTien = decimal.Zero;
+                        }
+
+                        @if (Model != null && Model.Any())
+                        {
+
+
+
+                            foreach (var item in Model)
+                            {
+                                tongTien += item.TotalPrice;
+                                <tr class="" id="trow_@item.productId">
+                                    <td>
+                                        <img src="~/images/products/@item.ProductImg" width="60" />
+                                    </td>
+                                    <td>
+                                        <h5><a class="text-black-50" href="/products/details/@item.productId">@item.ProductName</a></h5>
+                                    </td>
+
+
+
+                                    <td>
+                                        <h5>@item.Price.ToString("#,##0") VNĐ</h5>
+                                    </td>
+                                    <td><input class="form-control" id="Quantity_@item.productId" type="number" value="@item.Quantity" /></td>
+                                    <td>@item.TotalPrice.ToString("#,##0") VNĐ</td>
+                                    <td><a href="#" data-id="@item.productId" class="btn btn-sm  btnDelete"><i class="fa-solid fa-xmark"></i></a></td>
+                                    <td>
+                                        @*  <a href="#" data-id="@item.productId" class="btn btn-sm  btnUpdate"><i class="fa-regular fa-pen-to-square"></i></a>*@
+                                        <a href="#" data-id="@item.productId" class="btn btn-sm btn-success btnUpdate">Cập nhật</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+
+
+
+                    </tbody>
+
+
+
+
+                </table>
+
+
+                @*<a  class="gray_btn btn btn-sm btnDeleteAll" href="#">Xóa</a>*@
+
+
+                <div style="float:right" class="cupon_text d-flex align-items-center">
+
+                    <a class="text-black-50">Tổng tiền: </a>
+                    <a class="gray_btn ml-3"> @tongTien.ToString("#,##0") VNĐ</a>
+                </div>
+
+
+
+
+            </div>
+            <div class="checkout_btn_inner d-flex align-items-center mt-5">
+                <a class="gray_btn" href="/product/index">Continue Shopping</a>
+
+            </div>
+
+            <a style="float:right" class="primary-btn" href="/shoppingcart/checkout">Thanh toán</a>
+        </div>
+    </div>
+</section>
+
+
+
+
+
