@@ -1,0 +1,186 @@
+﻿@model IEnumerable<MarketOnl.Data.Order>
+
+@{
+
+    ViewData["Title"] = "Danh sách đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Đơn hàng</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h5>Quản lí đơn hàng</h5>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <thead>
+
+
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã đơn hàng</th>
+                        <th>Tên khách hàng</th>
+                        <th>Phone</th>
+                        <th>Tiền</th>
+                        <th>Trạng thái</th>
+
+                        <th>Ngày tạo</th>
+
+                    </tr>
+
+
+                </thead>
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        int i = 0;
+                        foreach (var item in Model)
+                        {
+                            i++;
+                            <tr id="trow_@item.OrderId">
+                                <td>@i</td>
+                                <td>@item.Code</td>
+                                <td>@item.CustomerName</td>
+                                <td>@item.Phone</td>
+                                <td>@item.TotalAmount.Value.ToString("#,##0") VNĐ</td>
+                                <td>@(item.TypePayment == 1 ? "Chờ thanh toán" : "Đã thanh toán")</td>
+
+                                <td>@item.CreatedDate.Value.ToString("dd/MM/yyyy")</td>
+
+                                <td>
+                                    <a class="btn btn-primary btn-sm" href="/admin/orders/details/@item.OrderId">Xem</a>
+                                    <a class="btn btn-danger btn-sm btnCapNhat" href="#" data-id="@item.OrderId">Cập nhật</a>
+                                </td>
+                            </tr>
+
+                        }
+
+
+
+
+
+
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có đơn hàng nào</td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+
+
+
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</section>
+
+
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cập nhật trạng thái</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtOrderId" value="0" />
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select class="form-control" id="ddTrangThai">
+                        <option value="2">
+                            Đã thanh toán
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="btnLuu">Lưu</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+@section JS{
+    <script>
+        $(document).ready(function (){
+            $('body').on('click', '.btnCapNhat', function () {
+
+                var id = $(this).data('id');
+
+                // Đoạn mã này sẽ đặt giá trị của biến id vào ô nhập liệu có id là #txtOrderId.
+                $('#txtOrderId').val(id);
+                $('#modal-default').modal('show');
+
+            });
+
+            $('body').on('click', '#btnLuu', function () {
+
+                // $('#txtOrderId'): Chọn phần tử có id là #txtOrderId.
+                //.val(): Lấy giá trị hiện tại của ô nhập liệu này.
+                //  var id = ...: Lưu giá trị lấy được vào biến id.
+
+                var id = $('#txtOrderId').val();
+
+                // $('#ddTrangThai'): Chọn phần tử có id là #ddTrangThai.
+                //.val(): Lấy giá trị hiện tại của dropdown này(giá trị của tùy chọn được chọn).
+                var trangthai = $('#ddTrangThai').val();
+
+
+                $.ajax({
+                    url: '/admin/orders/updateTT',
+                    type: 'POST',
+                    data: { id: id, trangthai: trangthai },
+                    success: function (rs) {
+                        if (rs.success) {
+                            location.reload();
+                        }
+                    }
+                })
+            })
+        })
+
+
+
+    </script>
+}

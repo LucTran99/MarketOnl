@@ -1,0 +1,70 @@
+﻿
+
+@model MarketOnl.Models.OrderViewModel
+
+
+@{
+  
+    Layout = null;
+}
+
+
+
+@using (Html.AjaxBeginForm("CheckOut", "ShoppingCart", new AjaxOptions
+ {
+     HttpMethod = "POST",
+   
+     OnFailure = "OnFailure"
+ }, new { @Id = "myForm" }))
+{
+
+
+
+    <div class="col-md-12 form-group ">
+        <label class="placeholder">Họ tên</label>
+        <input type="text" class="form-control" id="first" name="CustomerName">
+
+    </div>
+    <div class="col-md-12 form-group ">
+        <label class="placeholder">Số điện thoại</label>
+        <input type="text" class="form-control" id="last" name="Phone">
+
+    </div>
+
+
+    <div class="col-md-12 form-group ">
+        <label class="placeholder">Địa chỉ</label>
+        <input type="text" class="form-control" id="city" name="Address">
+
+    </div>
+
+
+    <div class="col-md-12 form-group ">
+        <label class="placeholder">Email</label>
+        <input type="text" class="form-control" id="add1" name="Email">
+
+    </div>
+
+
+
+
+    <div class=" col-md-12 form-group ">
+
+        <label class="">Hình thức thanh toán</label>
+        <select class="form-control" name="TypePayment">
+            <option value="1" selected>COD</option>
+            <option value="2">Chuyển khoản</option>
+
+        </select>
+
+    </div>
+
+    @*<div class="col-md-12 form-group">
+    <div class="creat_account">
+    <input type="checkbox" id="f-option2" name="selector">
+    <label for="f-option2">Create an account?</label>
+    </div>
+    </div>*@
+
+    <button class="primary-btn ml-3 mt-4" style="border:none" type="submit">Đặt hàng</button>
+}

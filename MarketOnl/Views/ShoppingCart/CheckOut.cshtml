@@ -1,0 +1,105 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_BannerAreaView.cshtml";
+    //var tongTien = decimal.Zero;
+}
+<section class="checkout_area section_gap">
+    <div class="container">
+
+
+        @if (ViewBag.CheckCart != null)
+        {
+            <div class="billing_details">
+                <div class="row">
+                    <div id="show_success"></div>
+                    <div class="col-lg-8">
+                        <h3>Thông tin khách hàng</h3>
+
+
+                        @await Html.PartialAsync("PartialCheckOut.cshtml")
+
+                     
+                    </div>
+
+
+
+
+
+
+                    <div class="col-lg-4">
+
+
+                        @await Component.InvokeAsync("ThanhToan");
+
+
+
+
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        }
+        else
+        {
+            <div>Bạn chưa có sản phẩm nào trong giỏ hàng vui lòng <a href="/product/index">quay lại </a> để mua hàng</div>
+        }
+
+
+
+
+
+
+
+    </div>
+</section>
+
+
+
+
+
+@section Js {
+
+
+    <script src="~/Content/assets/js/categories_custom.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+
+        function OnFailure (rs) {
+            if (!rs.success) {
+                $('show_success').html("Bạn đã mua hàng thất bại")
+            }
+        }
+
+        $(document).ready(function () {
+            $('#myForm').validate({
+                rules: {
+                    'customerName': {
+                        required: true
+                    },
+                    'phone': {
+                        required: true
+                    }
+                },
+                message: {
+                    'customerName': 'Bạn không được để trống họ tên',
+                    'phone': 'Bạn không được để trống số điện thoại'
+                }
+            });
+        })
+
+
+
+
+
+    </script>
+
+
+
+
+}

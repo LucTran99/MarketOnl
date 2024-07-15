@@ -74,20 +74,48 @@ namespace MarketOnl.Areas.Admin.Controllers
 
 
 
+
+
+        [HttpGet]
+        public async Task<IActionResult> getItem(int id)
+        {
+            if (_context.Roles == null)
+            {
+
+                return NotFound();
+            }
+
+            var item = await _context.Roles.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return Ok(item);
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> Save(RolesVM model)
         {
-                
-            MarketOnl.Data.Role item = new MarketOnl.Data.Role();
+            MarketOnl.Data.Role item;
+
+            if (model.Id == null) // Thêm mới
+            {
+                item = new MarketOnl.Data.Role();
+                await _context.Roles.AddAsync(item);
+            }
+            else // Cập nhật
+            {
+                item = await _context.Roles.FindAsync(model.Id);
+              
+            }
 
             item.RoleName = model.Name;
 
-            await _context.Roles.AddAsync(item);
             await _context.SaveChangesAsync();
-            return Ok(item);
 
-
-
+            return Ok(item); // Trả về vai trò đã lưu
         }
 
         [HttpGet]

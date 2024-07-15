@@ -45,6 +45,19 @@ $(document).ready(function () {
 
 });
 
+function LoadCart() {
+    $.ajax({
+
+        url: '/shoppingcart/Partial_View_ItemCart',
+        type: 'GET',
+        success: function (rs) {
+            $('#load_data').html(rs);
+        }
+
+    })
+
+}
+
 
 
 function ShowCount() {

@@ -155,7 +155,36 @@
             })
 
 
+            // $(document).on("click", "a.btnEdit", function () {
+            //     let id = $(this).data("id");
+            //     $.getJSON("/admin/Roles/Edit", {
+            //         id: id
+            //     }, function (item) {
+                
+            //         $("#Id").val(item.id);
+            //         $("#Name").val(item.roleName);
+            //         $("#modal-default").modal('show');
 
+            //     })
+            // })
+            $(document).on("click", "a.btnEdit", function () {
+                let id = $(this).data("id");
+                $.ajax({
+                    url: "/admin/Roles/getItem",
+                    method: "GET",
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        $("#Id").val(data.id);
+                        $("#Name").val(data.roleName);
+                        $("#modal-default").modal('show');
+                    },
+                    error: function (error) {
+                        console.error("Lỗi khi lấy dữ liệu:", error);
+                    }
+                });
+            });
 
             $('body').on('click', 'a.btnDelete', function () {
                 let id = $(this).data('id');

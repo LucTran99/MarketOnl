@@ -13,6 +13,7 @@ builder.Services.AddDbContext<BanHangOnlContext>(option => option.UseSqlServer(b
 
 
 
+
 builder.Services.AddSession(cfg =>
 {
     cfg.Cookie.IsEssential = true;

@@ -25,5 +25,7 @@ public partial class Order
 
     public int? Status { get; set; }
 
+    public DateTime? CreatedDate { get; set; }
+
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }
