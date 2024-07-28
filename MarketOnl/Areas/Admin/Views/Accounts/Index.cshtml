@@ -147,7 +147,10 @@
                 "ajax": {
                     "url": "/Admin/Accounts/GetList",
                     "type": "POST",
-                    "dataType": "json"
+                    "dataType": "json",
+                    "error": function (xhr, error, code) {
+                        toastr.error("Bạn không có quyền truy cập vào chức năng này!!")
+                    }
                 },
                 "columns": [
                     {
@@ -237,6 +240,8 @@
                     $('#PhoneNumber').val(item.phoneNumber);
                     $('#RoleId').val(item.roleId).change();
                     $("#modal-default").modal('show');
+                }).fail(function () {
+                    toastr.error("Bạn không có quyền truy cập vào chức năng này!!");
                 })
             })
 
@@ -260,16 +265,17 @@
                         items.ajax.reload();
                     },
                     error: function (xhr, status, error) {
-                        toastr.error("Thông báo: Có lỗi xảy ra!!");
-                        console.log("Error: " + error);
-                        console.log("Status: " + status);
-                        console.dir(xhr);
+                        toastr.error("Bạn không có quyền truy cập vào chức năng này!!");
+
+                        // console.log("Error: " + error);
+                        // console.log("Status: " + status);
+                        // console.dir(xhr);
 
 
-                        // Hiển thị chi tiết lỗi từ phản hồi của máy chủ (nếu có)
-                        if (xhr.responseText) {
-                            console.log("Response Text: " + xhr.responseText);
-                        }
+                        // // Hiển thị chi tiết lỗi từ phản hồi của máy chủ (nếu có)
+                        // if (xhr.responseText) {
+                        //     console.log("Response Text: " + xhr.responseText);
+                        // }
                     }
 
 

@@ -1,4 +1,5 @@
-﻿using MarketOnl.Data;
+﻿using MarketOnl.Areas.Admin.Attributes;
+using MarketOnl.Data;
 using MarketOnl.Extentions;
 using MarketOnl.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,7 @@ namespace MarketOnl.Areas.Admin.Controllers
         }
 
 
+        [Authorized(Code = "view-account")]
         [HttpPost]
         public async Task<IActionResult> GetList(jDatatable model)
         {
@@ -67,6 +69,11 @@ namespace MarketOnl.Areas.Admin.Controllers
             return Ok(jsonData);
         }
 
+
+
+
+
+        [Authorized(Code = "edit-account")]
         [HttpGet]
         public async Task<IActionResult> getItem(int id)
         {
@@ -85,7 +92,7 @@ namespace MarketOnl.Areas.Admin.Controllers
         }
 
 
-
+        [Authorized(Code = "save-account")]
         [HttpPost]
         public async Task<ActionResult> Save(AccountsVM model, IFormFile Picture)
         {
@@ -169,6 +176,14 @@ namespace MarketOnl.Areas.Admin.Controllers
             if (items != null)
             {
                 HttpContext.Session.Set("Member", items);
+
+                var codes = _context.Authorizeds.Where(x => x.RolesId == items.RoleId).Select(x=> x.Crud.Code).ToList();
+
+                HttpContext.Session.Set("Codes", codes);
+
+
+
+
                 return RedirectToAction("Index", "Home");
             }
 
