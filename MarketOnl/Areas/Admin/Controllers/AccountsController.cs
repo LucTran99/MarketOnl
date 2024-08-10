@@ -199,5 +199,22 @@ namespace MarketOnl.Areas.Admin.Controllers
             HttpContext.Session.Remove("Member");
             return RedirectToAction("Login", "Accounts");
         }
+
+        [Authorized(Code = "delete-account")]
+        [HttpGet]
+        public async Task<ActionResult> Delete(int id)
+        {
+
+
+            var item = await _context.Accounts.FindAsync(id);
+            _context.Entry(item).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
+            return Ok(true);
+
+
+        }
+
+
+
     }
 }

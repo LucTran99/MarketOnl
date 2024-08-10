@@ -30,6 +30,13 @@ namespace MarketOnl.Controllers
 
         public IActionResult CheckOutSuccess()
         {
+            ShoppingCart cart = HttpContext.Session.Get<ShoppingCart>("Cart");
+
+            if(cart != null && cart.Items.Any())
+            {
+                return View(cart.Items);
+            }
+
             return View();
         }
 
@@ -110,7 +117,7 @@ namespace MarketOnl.Controllers
                     // Tạo một mã đơn hàng
 
                     Random rd = new Random();
-                    order.Code = "ĐH"+rd.Next(0,9) + +rd.Next(0, 9) + +rd.Next(0, 9);
+                    order.Code = "ĐH"+rd.Next(0,9)  +rd.Next(0, 9) +rd.Next(0, 9);
 
                     _context.Orders.Add(order);
                     _context.SaveChanges();

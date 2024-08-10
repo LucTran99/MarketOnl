@@ -18,7 +18,11 @@ $(document).ready(function () {
 
             url: '/shoppingcart/addtocart',
             type: 'POST',
+
+            //  // Dữ liệu gửi đi, bao gồm id sản phẩm và số lượng
             data: { id: id, quantity: quatity },
+
+            // Hàm sẽ được gọi khi yêu cầu thành công
             success: function (rs) {
                /* console.log(rs);*/
                 if (rs.success) {
@@ -45,18 +49,18 @@ $(document).ready(function () {
 
 });
 
-function LoadCart() {
-    $.ajax({
+//function LoadCart() {
+//    $.ajax({
 
-        url: '/shoppingcart/Partial_View_ItemCart',
-        type: 'GET',
-        success: function (rs) {
-            $('#load_data').html(rs);
-        }
+//        url: '/shoppingcart/Partial_View_ItemCart',
+//        type: 'GET',
+//        success: function (rs) {
+//            $('#load_data').html(rs);
+//        }
 
-    })
+//    })
 
-}
+//}
 
 
 

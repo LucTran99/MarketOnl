@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MarketOnl.Data.News>
+
+
+<style>
+    .img-popularNews {
+        width: 100px;
+        height: 60px;
+    }
+</style>
+
+<aside class="single_sidebar_widget popular_post_widget">
+    <h3 class="widget_title">Popular Posts</h3>
+
+    @foreach (var item in Model)
+    {
+       
+
+        <div class="media post_item">
+            <img src="~/images/news/@item.Image" class="img-popularNews" alt="@item.Title">
+            <div class="media-body">
+                <a href="@Url.RouteUrl("Posts", new {Alias = item.Alias, id = item.NewsId})">
+                    <h3>@item.Title</h3>
+                </a>
+                <p>02 Hours ago</p>
+            </div>
+        </div>
+
+    }
+
+
+    <div class="br"></div>
+</aside>
+

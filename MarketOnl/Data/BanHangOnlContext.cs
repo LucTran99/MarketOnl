@@ -21,7 +21,11 @@ public partial class BanHangOnlContext : DbContext
 
     public virtual DbSet<CatProduct> CatProducts { get; set; }
 
+    public virtual DbSet<Category> Categories { get; set; }
+
     public virtual DbSet<Crud> Cruds { get; set; }
+
+    public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<News> News { get; set; }
 
@@ -83,6 +87,14 @@ public partial class BanHangOnlContext : DbContext
             entity.Property(e => e.Title).HasMaxLength(250);
         });
 
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.ToTable("Category");
+
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<Crud>(entity =>
         {
             entity.ToTable("CRUD");
@@ -90,6 +102,21 @@ public partial class BanHangOnlContext : DbContext
             entity.Property(e => e.CrudId).HasColumnName("CrudID");
             entity.Property(e => e.Code).HasMaxLength(150);
             entity.Property(e => e.Name).HasMaxLength(50);
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Cruds)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("FK_CRUD_Category");
+        });
+
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.ToTable("Customer");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CustomerEmail).HasMaxLength(50);
+            entity.Property(e => e.CustomerName).HasMaxLength(50);
+            entity.Property(e => e.CustomerPassoword).HasMaxLength(200);
+            entity.Property(e => e.CustomerPhone).HasMaxLength(50);
         });
 
         modelBuilder.Entity<News>(entity =>

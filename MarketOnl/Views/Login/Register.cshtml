@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "Đăng kí";
+    Layout = "~/Views/Shared/_BannerAreaView.cshtml";
+}
+
+<style>
+	.form-regis{
+		padding-top:42px;
+		padding-bottom:50px;
+	}
+</style>
+
+
+<section class="login_box_area section_gap">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-lg-6" style="margin: 50px auto;">
+				<div class="login_form_inner form-regis">
+					<h3>Đăng Ký</h3>
+					<form class="row login_form" asp-action="addCustomer" method="post" id="contactForm" novalidate="novalidate">
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" id="CustomerName1" name="CustomerName" placeholder="Tên người dùng" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tên người dùng'">
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" id="Phone" name="Phone" placeholder="Số điện thoại" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Số điện thoại'">
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" id="Email" name="Email" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="password" class="form-control" id="Password1" name="Password" placeholder="Mật khẩu" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mật khẩu'">
+						</div>
+					
+						<div class="col-md-12 form-group">
+							<button type="submit" value="submit" class="primary-btn">Đăng ký</button>
+							<a href="#">Quên mật khẩu?</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

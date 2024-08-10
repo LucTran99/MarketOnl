@@ -10,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddNotyf(config => { config.DurationInSeconds = 5; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
 builder.Services.AddDbContext<BanHangOnlContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("BanHangOnlContext")));
-
+// Add IHttpContextAccessor
+builder.Services.AddHttpContextAccessor();
 
 
 

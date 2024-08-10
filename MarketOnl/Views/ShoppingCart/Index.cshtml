@@ -1,6 +1,7 @@
 ﻿
 @model IEnumerable<MarketOnl.Models.ShoppingCartItem>
-
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Giỏ hàng";
@@ -94,7 +95,26 @@
 
             </div>
 
-            <a style="float:right" class="primary-btn" href="/shoppingcart/checkout">Thanh toán</a>
+            @{
+                var customerId = Context.Session.GetInt32("CustomerId");
+                if(customerId != null)
+                {
+
+
+                    <a style="float:right" class="primary-btn" href="/shoppingcart/checkout">Thanh toán</a>
+
+
+                }
+                else
+                {
+
+                    <a style="float:right" class="primary-btn" asp-action="index" asp-controller="login" >Thanh toán</a>
+
+                }
+            }
+
+
+
         </div>
     </div>
 </section>

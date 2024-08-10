@@ -2,11 +2,16 @@
 {
     public class ShoppingCart
     {
+        // Đây là kiểu của thuộc tính Items, nó là một danh sách các đối tượng ShoppingCartItem.
         public List<ShoppingCartItem> Items { get; set; }
+
+
         public ShoppingCart()
         {
             this.Items = new List<ShoppingCartItem>();
         }
+
+
 
         public void AddToCart(ShoppingCartItem item, int Quatity)
         {
@@ -23,7 +28,7 @@
         }
 
 
-
+          
         public decimal GetTotal()
         {
             return Items.Sum(x => x.TotalPrice);

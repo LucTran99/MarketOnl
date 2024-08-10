@@ -5804,6 +5804,32 @@ label {
     text-overflow: ellipsis; /* Thêm dấu ba chấm nếu nội dung bị cắt */
 }
 
+
+.title-sales{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.img-relatedPro {
+    width: 70px;
+    height: 70px;
+}
+
+
+
+.title-RealatedPro {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
 .disabled a.page-link {
     width: 90px;
     height: 40px;

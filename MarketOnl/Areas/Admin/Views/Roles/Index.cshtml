@@ -1,6 +1,4 @@
-﻿
-
-@{
+﻿@{
     ViewData["Title"] = "Danh sách vai trò";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
@@ -65,6 +63,39 @@
 </div>
 
 
+
+
+<div class="modal fade" id="modal-authorized">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title">Phân quyền</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <input type="hidden" id="GroupId" name="GroupId" />
+                <select id="CategoryId" name="CategoryId" class="form-control">
+                    <option value="">
+                        ---Chọn nhóm quyền---
+                    </option>
+                </select>
+                <div id="RoleList">
+                </div>
+
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 @section Css {
 
     <link href="~/adminassets/plugins/datatables-bs4/css/datatables.bootstrap4.css" rel="stylesheet" />
@@ -75,8 +106,6 @@
         div.dt-buttons {
             float: right;
         }
-      
-    
     </style>
 
 }
@@ -99,7 +128,10 @@
                 "ajax": {
                     "url": "/Admin/Roles/GetList",
                     "type": "POST",
-                    "dataType": "json"
+                    "dataType": "json",
+                    "error": function (xhr, error, code) {
+                        toastr.error("Bạn không có quyền truy cập chức năng này");
+                    }
                 },
                 "columns": [
                     {
@@ -114,8 +146,10 @@
                                 '<i class="fas fa-sort-amount-down"></i>'
                                 + '</a>' +
                                 '<div class="dropdown-menu" role="menu" style="">' +
-                                '<a class="dropdown-item text-primary btnEdit" href="#" data-id="' + row.roleId + '"><i class="fas fa-pencil mr-3"></i>Cập nhật</a>' +
+                                '<a class="dropdown-item text-primary btnEdit" href="#" data-id="' + row.roleId + '"><i class="fas fa-pencil-alt mr-3"></i>Cập nhật</a>' +
                                 '<a class="dropdown-item text-danger btnDelete" href="#" data-id="' + row.roleId + '"><i class="fas fa-trash mr-3"></i>Xoá</a>' +
+                                '<div class="dropdown-divider"></div>' +
+                                '<a class="dropdown-item text-warning btnAuthorized" href="#" data-id="' + row.roleId + '"><i class="fa fa-unlock-alt mr-3"></i>Phân quyền</a>' +
                                 '</div>' +
                                 '</div>';
                             return tool;
@@ -150,6 +184,9 @@
                         $('#modal-default').modal('hide');
                         toastr.success('Thông báo: Lưu thành công !!');
                         items.ajax.reload();
+                    },
+                    error: function () {
+                        toastr.error("Bạn không có quyền truy cập chức năng này");
                     }
                 })
             })
@@ -160,13 +197,14 @@
             //     $.getJSON("/admin/Roles/Edit", {
             //         id: id
             //     }, function (item) {
-                
+
             //         $("#Id").val(item.id);
             //         $("#Name").val(item.roleName);
             //         $("#modal-default").modal('show');
 
             //     })
             // })
+
             $(document).on("click", "a.btnEdit", function () {
                 let id = $(this).data("id");
                 $.ajax({
@@ -183,7 +221,9 @@
                     error: function (error) {
                         console.error("Lỗi khi lấy dữ liệu:", error);
                     }
-                });
+                }).fail(function () {
+                    toastr.error("Bạn không có quyền truy cập chức năng này");
+                })
             });
 
             $('body').on('click', 'a.btnDelete', function () {
@@ -208,11 +248,88 @@
                             else {
                                 toastr.error('Lỗi: Kiểm tra lại ràng buộc của nhóm quyền');
                             }
+                        }).fail(function () {
+                            toastr.error("Bạn không có quyền truy cập chức năng này");
                         })
                     }
                 })
 
+            })
 
+
+
+
+            function LoadCategory() {
+                if ($('#CategoryId > option').length <= 1) {
+                    $.getJSON("/Admin/Category/GetChild", {
+                        parentId: '2'
+                    }, function (categories) {
+                        categories.forEach((item) => {
+                            var o = new Option(item.name, item.id);
+                            $("#CategoryId").append(o);
+                        })
+                    })
+                }
+            }
+
+
+            $(document).on('click', 'a.btnAuthorized', function () {
+                let id = $(this).data('id');
+                $('#GroupId').val(id);
+                LoadCategory();
+                $('#modal-authorized').modal('show');
+
+
+            });
+
+
+
+            $("#CategoryId").change(function () {
+                //debugger;
+                let CategoryId = $(this).val();
+                let GroupId = $("#GroupId").val();
+
+                // console.log("CategoryId:", CategoryId);
+
+
+                $.getJSON("/Admin/Crud/GetAllByCategory", {
+                    CategoryId: CategoryId,
+                    GroupId: GroupId
+                })
+                    .done(function (role) {
+                        // Xử lý khi dữ liệu được tải về thành công
+                        // console.log(role);
+                        $("#RoleList").html("");
+                        role.forEach((item) => {
+
+                            $('<div class="custom-control custom-switch"> ' +
+                                '<input type="checkbox" class="custom-control-input Role" ' + (item.rolesId == GroupId ? "checked" : "") + ' id="' + item.crudId + '" data-id="' + item.crudId + '" />' +
+                                '<label class="custom-control-label" for="' + item.crudId + '"> ' + item.name + '</label>' +
+                                '</div>').appendTo($("#RoleList"));
+
+                        })
+
+
+
+
+                    })
+                    .fail(function (jqxhr, textStatus, errorThrown) {
+                        console.error("Lỗi:", textStatus, errorThrown);
+                    });
+
+            })
+
+            $(document).on('change', 'input.Role', function () {
+                let RoleId = $(this).data('id');
+                let GroupId = $('#GroupId').val();
+                $.get("/Admin/Authorized/Save", {
+                    GroupId: GroupId,
+                    RoleId: RoleId
+                }, function (data) {
+                    toastr.success("Thông báo: Cập nhật quyền thành công");
+                }).fail(function () {
+                    toastr.error("Bạn không có quyền truy cập chức năng này");
+                })
             })
 
 

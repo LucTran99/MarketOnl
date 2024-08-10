@@ -1,4 +1,5 @@
-﻿using MarketOnl.Data;
+﻿using MarketOnl.Areas.Admin.Attributes;
+using MarketOnl.Data;
 using MarketOnl.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace MarketOnl.Areas.Admin.Controllers
 
 
 
-
+        [Authorized(Code = "view-account")]
         [HttpPost]
         public async Task<IActionResult> GetList(jDatatable model)
         {
@@ -62,7 +63,7 @@ namespace MarketOnl.Areas.Admin.Controllers
         }
 
 
-
+        
         [HttpGet]
         public async Task<IActionResult> getList()
         {
@@ -75,7 +76,7 @@ namespace MarketOnl.Areas.Admin.Controllers
 
 
 
-
+        [Authorized(Code = "edit-account")]
         [HttpGet]
         public async Task<IActionResult> getItem(int id)
         {
@@ -94,7 +95,7 @@ namespace MarketOnl.Areas.Admin.Controllers
         }
 
 
-
+        [Authorized(Code = "save-account")]
         [HttpPost]
         public async Task<IActionResult> Save(RolesVM model)
         {
@@ -118,6 +119,9 @@ namespace MarketOnl.Areas.Admin.Controllers
             return Ok(item); // Trả về vai trò đã lưu
         }
 
+
+
+        [Authorized(Code = "delete-account")]
         [HttpGet]
         public async Task<ActionResult> Delete(int id)
         {

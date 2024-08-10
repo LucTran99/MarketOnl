@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿
+ @using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
 <head>
@@ -62,22 +66,59 @@
 							
 							</li>
 							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								   aria-expanded="false">Pages</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-									<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
-									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
-								</ul>
+								<a asp-action="index" asp-controller="contact" class="nav-link dropdown-toggle" role="button" aria-haspopup="true"
+								   aria-expanded="false">Liên hệ</a>
+
 							</li>
-							<li class="nav-item"><a class="nav-link" href="contact.html">Liên hệ</a></li>
+
+							
+							@{
+
+								var customerId = Context.Session.GetInt32("CustomerId");
+								if (customerId != null)
+								{
+
+
+										<li class="nav-item submenu dropdown">
+
+										<a asp-action="logout" asp-controller="login" onclick="confirmLogout(event)" class="nav-link dropdown-toggle" role="button" aria-haspopup="true"
+										   aria-expanded="false">Đăng xuất</a>
+
+
+											
+
+
+										</li>
+
+
+									
+
+								}
+								else
+								{
+
+									<li class="nav-item submenu dropdown">
+										<a asp-action="index" asp-controller="login" class="nav-link dropdown-toggle" role="button" aria-haspopup="true"
+										   aria-expanded="false">Đăng nhập</a>
+
+									</li>
+
+
+								}
+
+
+
+							}
+
+
+
 						</ul>
 						<ul class="nav navbar-nav navbar-right navCart">
 
 							<li class="checkout">
 
-								@*<i class="fa fa-shopping-cart" aria-hidden="true"></i>*@
-								<a href="#" class="cart"><span class="ti-bag"></span></a>
+
+								<a href="/shoppingCart/index" class="cart"><span class="ti-bag"></span></a>
 								<span id="checkout_items" class="checkout_items">0</span>
 
 							</li>
@@ -112,14 +153,14 @@
 						<div class="row single-slide align-items-center d-flex">
 							<div class="col-lg-5 col-md-6">
 								<div class="banner-content">
-									<h1>Nike New <br>Collection!</h1>
+									<h1>Bộ sưu tập <br>của Nike!</h1>
 									<p>
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+										Hãy khám phá bộ sưu tập mới của Nike, nơi mà phong cách và hiệu suất gặp nhau. Mỗi sản phẩm đều được thiết kế tỉ mỉ
+										để mang lại sự thoải mái và phong cách thời thượng cho bạn. Đừng bỏ lỡ cơ hội sở hữu những món đồ thời trang độc đáo này.
 									</p>
 									<div class="add-bag d-flex align-items-center">
 										<a class="add-btn" href=""><span class="lnr lnr-cross"></span></a>
-										<span class="add-text text-uppercase">Add to Bag</span>
+										<span class="add-text text-uppercase">Thêm vào giỏ</span>
 									</div>
 								</div>
 							</div>
@@ -133,14 +174,14 @@
 						<div class="row single-slide">
 							<div class="col-lg-5">
 								<div class="banner-content">
-									<h1>Nike New <br>Collection!</h1>
+									<h1>Bộ sưu tập <br>của Nike!</h1>
 									<p>
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+										Hãy khám phá bộ sưu tập mới của Nike, nơi mà phong cách và hiệu suất gặp nhau. Mỗi sản phẩm đều được thiết kế tỉ mỉ
+										để mang lại sự thoải mái và phong cách thời thượng cho bạn. Đừng bỏ lỡ cơ hội sở hữu những món đồ thời trang độc đáo này.
 									</p>
 									<div class="add-bag d-flex align-items-center">
 										<a class="add-btn" href=""><span class="lnr lnr-cross"></span></a>
-										<span class="add-text text-uppercase">Add to Bag</span>
+										<span class="add-text text-uppercase">Thêm vào giỏ</span>
 									</div>
 								</div>
 							</div>
@@ -208,17 +249,17 @@
 			<div class="row">
 				<div class="col-lg-3  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
-						<h6>About Us</h6>
+						<h6>Về chúng tôi </h6>
 						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore
-							magna aliqua.
+							Cửa hàng trực tuyến của chúng tôi cung cấp một loạt các loại quần áo và giày dép,
+							kết hợp chất lượng và phong cách để đáp ứng nhu cầu của những khách hàng yêu thích thời trang.
 						</p>
 					</div>
 				</div>
 				<div class="col-lg-4  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
 						<h6>Newsletter</h6>
-						<p>Stay update with our latest</p>
+						<p>Hãy cập nhật thông tin mới nhất của chúng tôi</p>
 						<div class="" id="mc_embed_signup">
 
 							<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
@@ -226,7 +267,7 @@
 
 								<div class="d-flex flex-row">
 
-									<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+									<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Nhập Email '"
 										   required="" type="email">
 
 
@@ -261,8 +302,8 @@
 				</div>
 				<div class="col-lg-2 col-md-6 col-sm-6">
 					<div class="single-footer-widget">
-						<h6>Follow Us</h6>
-						<p>Let us be social</p>
+						<h6>Theo dõi chúng tôi</h6>
+						<p>Chúng ta hãy giao lưu</p>
 						<div class="footer-social d-flex align-items-center">
 							<a href="#"><i class="fa fa-facebook"></i></a>
 							<a href="#"><i class="fa fa-twitter"></i></a>
@@ -303,6 +344,19 @@
 	<script src="~/ClientAssets/js/gmaps.min.js"></script>
 	<script src="~/ClientAssets/js/main.js"></script>
     <script src="~/clientassets/js/shoppingcart.js"></script>
+
+
+	<script type="text/javascript">
+		function confirmLogout(event) {
+			event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+			var userConfirmed = confirm("Bạn có muốn đăng xuất không?");
+			if (userConfirmed) {
+				// Nếu người dùng xác nhận, chuyển hướng đến URL của liên kết
+				window.location.href = event.currentTarget.href;
+			}
+		}
+	</script>
+
 
 	@await RenderSectionAsync("Js", required: false)
 </body>

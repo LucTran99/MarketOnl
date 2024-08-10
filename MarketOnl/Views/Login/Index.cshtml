@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "~/Views/Shared/_BannerAreaView.cshtml";
+}
+
+
+<style>
+	.form-lgin{
+		padding-bottom:56px;
+		padding-top: 45px;
+	}
+</style>
+
+
+<section class="login_box_area section_gap">
+	<div class="container">
+		<div class="row">
+		
+			<div class="col-lg-6" style="margin: 50px auto;">
+				<div class="login_form_inner form-lgin">
+					<h3>Đăng nhập</h3>
+					<form class="row login_form" asp-action="login" method="post" id="contactForm" novalidate="novalidate">
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" id="Email" name="Email" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tên người dùng'">
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="password" class="form-control" id="password" name="Password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mật khẩu'">
+						</div>
+					
+						<div class="col-md-12 form-group">
+							<button type="submit" value="submit" class="primary-btn">Đăng nhập</button>
+							<a href="#">Quên mật khẩu?</a>
+							<a asp-action="register" asp-controller="login">Đăng kí</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

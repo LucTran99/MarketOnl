@@ -1,5 +1,7 @@
 ﻿using MarketOnl.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace MarketOnl.Areas.Admin.Controllers
 {
@@ -39,6 +41,16 @@ namespace MarketOnl.Areas.Admin.Controllers
                 return Json(new { massage = "Success", Success = true });
             }
             return Json(new { massage = "UnSuccess", Success = false });
+        }
+
+
+        public IActionResult Details(int id)
+        {
+            var data = _context.Orders.Find(id);
+            var orderDetails = _context.OrderDetails.Include(od => od.Product).Where(x => x.OrderId == id).ToList();
+            ViewBag.OrderDetails = orderDetails;
+            return View(data);
+
         }
 
 

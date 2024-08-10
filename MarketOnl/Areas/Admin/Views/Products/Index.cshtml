@@ -49,8 +49,16 @@
                             <td>@item.Cat.CatName</td>
 
                             <td>@item.Quatity</td>
-                            <td>@item.Price.Value.ToString("#,##0") VNĐ</td>
 
+                            @if(item.Price != null)
+                            {
+                                <td>@item.Price.Value.ToString("#,##0") VNĐ</td>
+
+                            }else{
+                                <td>Đang cập nhật</td>
+                            }
+
+                           
 
 
                             <td>

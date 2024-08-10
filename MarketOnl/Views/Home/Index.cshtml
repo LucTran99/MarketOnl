@@ -16,11 +16,7 @@
 			<div class="col-lg-6 text-center">
 				<div class="section-title">
 					<h1>Sản phẩm mới nhất</h1>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-						dolore
-						magna aliqua.
-					</p>
+					
 				</div>
 			</div>
 		</div>
@@ -30,6 +26,7 @@
 			{
 				foreach(var item in Model)
 				{
+					string url = $"products/{item.Alias}-{item.ProductId}.html";
 					<!-- single product -->
 					<div class="col-lg-3 col-md-6">
 						<div class="single-product">
@@ -56,7 +53,7 @@
 										<span class="lnr lnr-sync"></span>
 										<p class="hover-text">So sánh</p>
 									</a>
-									<a href="" class="social-info">
+									<a href="@Url.RouteUrl("ProductsDetails", new { Alias = item.Alias, id = item.ProductId })" class="social-info">
 										<span class="lnr lnr-move"></span>
 										<p class="hover-text">Xem thêm</p>
 									</a>

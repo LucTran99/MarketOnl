@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PagedList.Core;
 namespace MarketOnl.Controllers
 {
+    [Route("Products")]
     public class ProductsController : Controller
     {
         private readonly BanHangOnlContext _context;
@@ -35,19 +36,20 @@ namespace MarketOnl.Controllers
         }
 
 
-        [Route("/{Alias}-{id}.html", Name = "ProductsDetails")]
+        [Route("products/{Alias}-{id}.html", Name = "ProductsDetails")]
         public IActionResult Details(int id)
         {
             var product = _context.Products.FirstOrDefault(m => m.ProductId == id);
-            if (product == null)
+            if (product != null)
             {
-                return RedirectToAction("Index");
-            }
-            // Khi click vào cộng thêm 1
-            product.ViewCount = product.ViewCount + 1;
+                _context.Products.Attach(product);
+                // Khi click vào cộng thêm 1
+                product.ViewCount = product.ViewCount + 1;
 
-            // Đánh dấu rằng chỉ có thuộc tính ViewCount của đối tượng sản phẩm đã được thay đổi.
-            _context.Entry(product).Property(x => x.ViewCount).IsModified = true;
+                // Đánh dấu rằng chỉ có thuộc tính ViewCount của đối tượng sản phẩm đã được thay đổi.
+                _context.Entry(product).Property(x => x.ViewCount).IsModified = true;
+                _context.SaveChanges();
+            }
 
             return View(product);
         }

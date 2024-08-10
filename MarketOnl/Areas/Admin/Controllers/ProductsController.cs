@@ -70,7 +70,8 @@ namespace MarketOnl.Areas.Admin.Controllers
 
 
 
-                return RedirectToAction("Index");
+               
+                return RedirectToAction("Index", "Products", new { area = "Admin" });
             }
 
             ViewBag.ProductCategory = new SelectList(_context.CatProducts.ToList(), "CatId", "CatName");
@@ -120,8 +121,8 @@ namespace MarketOnl.Areas.Admin.Controllers
                 _context.Products.Update(model);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index");
-            }
+				return RedirectToAction("Index", "Products", new { area = "Admin" });
+			}
 
             ViewBag.ProductCategory = new SelectList(_context.CatProducts.ToList(), "CatId", "CatName");
 

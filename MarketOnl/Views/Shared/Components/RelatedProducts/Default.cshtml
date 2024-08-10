@@ -1,0 +1,24 @@
+﻿@model IEnumerable<MarketOnl.Data.Product>
+
+
+
+@foreach (var item in Model)
+{
+
+
+
+    <div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+        <div class="single-related-product d-flex">
+            <a><img src="~/images/products/@item.Picture" class="img-relatedPro" alt=""></a>
+            <div class="desc">
+                <a href="@Url.RouteUrl("ProductsDetails", new { Alias = item.Alias, id = item.ProductId })" class="title title-RealatedPro">@item.Title</a>
+                <div class="price">
+                    <h6>@item.PriceSale.Value.ToString("#,##0") VNĐ</h6>
+                    <h6 class="l-through">@item.Price.Value.ToString("#,##0") VNĐ</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}

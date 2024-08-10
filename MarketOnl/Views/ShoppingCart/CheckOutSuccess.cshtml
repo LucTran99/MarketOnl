@@ -1,8 +1,77 @@
-﻿
+﻿@model IEnumerable<MarketOnl.Models.ShoppingCartItem>
+
+
 @{
-    ViewData["Title"] = "CheckOutSuccess";
+    ViewData["Title"] = "Thanh toán thành công";
     Layout = "~/Views/Shared/_BannerAreaView.cshtml";
+    var tongTien = decimal.Zero;
 }
 
-<h1>Đặt hàng thành công</h1>
 
+<section class="order_details section_gap">
+    <div class="container">
+        <h3 class="title_confirmation">Cảm ơn. Đơn hàng của bạn đã được nhận.</h3>
+
+
+
+
+<div class="order_details_table">
+    <h2>Đơn hàng chi tiết</h2>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Sản phẩm</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @if (Model != null && Model.Count() > 0)
+                {
+
+                    foreach (var item in Model)
+                    {
+                        int thanhTien = item.Quantity * (int)item.Price;
+                        tongTien += item.TotalPrice;
+                        <tr>
+                            <td>
+                                <p>@item.ProductName</p>
+                            </td>
+                            <td>
+                                <h5>x 0 @item.Quantity</h5>
+                            </td>
+                            <td>
+                                <p>@thanhTien.ToString("#,##0") VNĐ</p>
+                            </td>
+                        </tr>
+
+
+                    
+                    }
+                }
+
+
+
+
+
+                <tr>
+                    <td>
+                        <h4>Tổng tiền</h4>
+                    </td>
+                    <td>
+                        <h5></h5>
+                    </td>
+                    <td>
+                                <p>@tongTien.ToString("#,##0") VNĐ</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    </div>
+</section>
